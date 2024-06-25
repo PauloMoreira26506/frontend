@@ -1,0 +1,16 @@
+.menu{
+    background-color: var(--Branco);
+    width: 447px;
+    height: auto;
+    flex-shrink: 0;
+    position: absolute;
+    z-index: 100;
+    border-radius: 20px;
+    margin-top: 20px;
+    padding: 20px;
+}
+
+.texto{
+    text-align: start;
+    margin: 0;
+}

@@ -1,0 +1,69 @@
+.capaProduto{
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 32px;
+}
+
+.capaProduto img{
+    width: 100%;
+    max-height: 40vh;
+    object-fit: cover;
+}
+
+.gradiente {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0), var(--Branco));
+    z-index: 1;
+}
+
+.nomeProduto{
+    color: var(--Preto);
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.categoriaProduto{
+    color: var(--Cinzento);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    margin: 0;
+}
+
+.descricao{
+    color: var(--Preto);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.barrasClassificacao{
+    width: 100%;
+    background-color:rgba(126, 126, 126, 0.418);
+}
+
+.slider{
+   border-radius: 20px; 
+   box-shadow: 0px 0px 80.4px 27px rgba(0, 123, 255, 0.20);
+}
+
+.titulo {
+    background: linear-gradient(0deg, var(--Branco) 20%, #007BFF 100%);
+    background-size:100% 100% ;
+    text-align: center;
+    font-size: 227px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    /* https://www.scaler.com/topics/text-gradient-css/ */
+}

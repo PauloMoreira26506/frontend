@@ -1,0 +1,232 @@
+@import "~bootstrap-icons/font/bootstrap-icons.css";
+
+:root{
+  --AzulEscuro: rgba(72, 87, 163, 1);
+  --AzulClaro: rgb(55, 140, 231);
+  --AzulClaro2: rgba(143, 197, 255, 1);
+  --Branco: rgba(240, 247, 253, 1);
+  --Preto: rgba(1, 2, 41, 1);
+  --Cinzento: rgb(129, 143, 158);
+  --CinzentoClaro: rgba(210, 217, 225, 1);
+}
+
+*{
+  margin: 0;
+}
+
+.App {
+  text-align: center;
+  font-family: "Urbanist", sans-serif;
+}
+
+.fundoAzul{
+  background-color: var(--AzulClaro);
+}
+
+.fundoBranco{
+  background-color: var(--Branco);
+}
+
+.navbar{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+}
+
+/* Página principal */
+/* Logo da navbar */
+.navbar-logo{
+  height: 44px;
+}
+
+/* Criar conta e fazer login */
+.links{
+  display: flex;
+  gap: 100px; 
+}
+
+.links a{
+  color: var(--Branco);
+  text-decoration: none;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 28px; /* 116.667% */
+  transition: .5s;
+}
+
+.links a:hover{
+  color: var(--AzulClaro2);
+  transition: .1s;
+  scale: 0.99;
+}
+
+.tituloCodeStore{
+  color: var(--Branco, #F0F7FD);
+  font-size: 128px;
+  font-style: normal;
+  font-weight: 900;
+  line-height: normal;
+}
+
+footer{
+  background-color: var(--AzulClaro2);
+}
+
+.slogan{
+  color: var(--Branco, #F0F7FD);  
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.titulo-secundario{
+  color: var(--Branco);
+  text-align: center;
+  font-size: 50px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.paragrafo{
+  color: var(--Branco);
+  text-align: justify;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.fundo{
+  background-image: url('/FundoLogo.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+}
+
+
+.px24Azul{
+  color: var(--AzulEscuro);
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
+}
+.px24Azul2{
+  color: var(--AzulClaro);
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
+}
+
+.px40Azul{
+  color: var(--AzulClaro);
+  text-align: center;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.px20Branco{
+  color: var(--Branco);
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
+}
+
+.branco{
+  color: var(--Branco);
+}
+
+.azul{
+  background-color: var(--AzulClaro2);
+}
+
+.cinzentoClaro{
+  background-color: var(--CinzentoClaro);
+}
+
+.imagem_logo{
+  color: var(--AzulClaro);
+}
+
+.box-area{
+  width: 1140px;
+  min-height: 563px;
+}
+
+.input::placeholder {
+  color: var(--CinzentoClaro);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px; /* 125% */
+}
+
+.submit-button{
+  color: var(--Branco);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 18px; /* 112.5% */
+}
+
+
+/* Logo da página de criar e entra na conta */
+.imagem_logo{
+  transition: 0.5s;
+}
+
+.imagem_logo:hover{
+  transition: 0.5s;
+  transform: rotate(-2deg);
+}
+
+.voltar{
+  text-align: left;
+  color: var(--Branco);
+}
+
+.left-box{
+  position: relative;
+  transition: .5s;
+}
+.left-box:hover{
+  position: relative;
+  transform: translateX(-10px);
+  transition: .5s;
+}
+
+.left-box:hover .imagem_logo{
+  transition: 0.5s;
+  scale: 1.04;
+}
+
+.left-box:hover .canto{
+  color: var(--Branco);
+  transition: .5s;
+}
+
+.canto{
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  color: transparent;
+  transition: .5s;
+}
+
+/* Página da loja */
+/* 32px Branco */
+.tituloLoja{
+  color: var(--Branco);
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
