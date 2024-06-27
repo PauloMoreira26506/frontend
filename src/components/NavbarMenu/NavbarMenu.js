@@ -20,7 +20,7 @@ const NavbarMenu = ({ imagem }) => {
   useState(() => {
     const utilizadorAtual = authService.getCurrentUtilizador();
     if (utilizadorAtual) {
-      const url = `http://localhost:3001/utilizadores/${utilizadorAtual.id}`;
+      const url = `https://backend-owlr.onrender.com/utilizadores/${utilizadorAtual.id}`;
       fetchData(url, setUtilizador);
     }
   }, []);
