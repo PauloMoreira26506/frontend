@@ -11,8 +11,8 @@ const Biblioteca = () => {
   const [associacoes, setAssociacoes] = useState([]);
 
   useEffect(() => {
-    const urlChaves = `http://localhost:3001/chaves/listar/${utilizadorAtual.id}`;
-    const urlAssociacoes = `http://localhost:3001/chaves/associacoesgerente/${utilizadorAtual.id}`;
+    const urlChaves = `https://backend-owlr.onrender.com/chaves/listar/${utilizadorAtual.id}`;
+    const urlAssociacoes = `https://backend-owlr.onrender.com/chaves/associacoesgerente/${utilizadorAtual.id}`;
     fetchData(urlChaves, setChaves);
     fetchData(urlAssociacoes, setAssociacoes);
   }, [utilizadorAtual]);
