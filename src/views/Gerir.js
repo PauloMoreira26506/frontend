@@ -26,8 +26,8 @@ const Gerir = () => {
   const emailChavesCount = {};
 
   const { id } = useParams();
-  const urlCompra = `http://localhost:3001/chaves/listarcompra/${id}`;
-  const urlAssociacao = `http://localhost:3001/chaves/associacoescomprador/${utilizadorAtual.id}`;
+  const urlCompra = `https://backend-owlr.onrender.com/chaves/listarcompra/${id}`;
+  const urlAssociacao = `https://backend-owlr.onrender.com/chaves/associacoescomprador/${utilizadorAtual.id}`;
 
   useEffect(() => {
     fetchData(urlCompra, setChaves);
