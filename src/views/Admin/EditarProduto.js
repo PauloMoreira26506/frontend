@@ -23,15 +23,15 @@ const EditarProduto = () => {
   useEffect(() => {
     const path = window.location.pathname;
     const id = path.split("/").pop();
-    const urlProduto = `http://localhost:3001/produtos/${id}`;
-    const urlCategorias = "http://localhost:3001/categorias";
+    const urlProduto = `https://backend-owlr.onrender.com/produtos/${id}`;
+    const urlCategorias = "https://backend-owlr.onrender.com/categorias";
     fetchData(urlProduto, setProduto);
     fetchData(urlCategorias, setCategorias);
   }, []);
 
   useEffect(() => {
     if (produto && produto.id) {
-      const url = `http://localhost:3001/categorias/${produto.categoriaid}`;
+      const url = `https://backend-owlr.onrender.com/categorias/${produto.categoriaid}`;
       console.log(`Categoria: ${produto.categoriaid}`);
       fetchData(url, setCategoriaSelecionada);
       setClassificacao(produto.classificacao);
@@ -52,7 +52,7 @@ const EditarProduto = () => {
   function sendUpdate() {
     const path = window.location.pathname;
     const id = path.split("/").pop();
-    const url = `http://localhost:3001/produtos/update/${id}`;
+    const url = `https://backend-owlr.onrender.com/produtos/update/${id}`;
     const data = {
       nome: nome,
       emp: desenvolvedor,
