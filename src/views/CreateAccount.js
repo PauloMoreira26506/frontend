@@ -17,7 +17,7 @@ const CreateAccount = () => {
     // setLoading(true);
 
     try{
-      const response = await axios.post("http://localhost:3001/utilizadores/register", {nome, email, password, tipoutilizador});
+      const response = await axios.post("https://backend-owlr.onrender.com/utilizadores/register", {nome, email, password, tipoutilizador});
       console.log(response);
     } catch (error) {
       console.error("Erro ao criar uma conta.", error);
