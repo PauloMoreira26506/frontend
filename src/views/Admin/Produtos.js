@@ -28,8 +28,8 @@ const Produtos = () => {
     },
   ];
 
-  const urlProdutos = "http://localhost:3001/produtos";
-  const urlCategorias = "http://localhost:3001/categorias";
+  const urlProdutos = "https://backend-owlr.onrender.com/produtos";
+  const urlCategorias = "https://backend-owlr.onrender.com/categorias";
 
   useEffect(() => {
     fetchData(urlProdutos, setProdutos);
