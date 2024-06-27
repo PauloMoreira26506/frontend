@@ -22,7 +22,7 @@ export const Produto = () => {
   const [produto, setProduto] = useState([]);
   const { utilizadorAtual } = useContext(UserContext);
 
-  const url = `http://localhost:3001/produtos/${produtoId}`;
+  const url = `https://backend-owlr.onrender.com/produtos/${produtoId}`;
 
   useEffect(() => {
     fetchData(url, setProduto);
@@ -35,7 +35,7 @@ export const Produto = () => {
 
   const handleObter = async () => {
     try{
-      const response = await axios.post('http://localhost:3001/chaves/associar', { utilizador: utilizadorAtual.id, produto: produtoId});
+      const response = await axios.post('https://backend-owlr.onrender.com/chaves/associar', { utilizador: utilizadorAtual.id, produto: produtoId});
       console.log('Chave associada com sucesso: ', response.data);
     } catch (error) {
       if(error.response){
