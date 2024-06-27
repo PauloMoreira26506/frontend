@@ -19,19 +19,19 @@ const Listar = ({id}) => {
     const search = params.get("search") || "";
     setSearchTerm(search);
 
-    let url = "http://localhost:3001/produtos";
+    let url = "https://backend-owlr.onrender.com/produtos";
 
     if(categoriaId){
-      url = `http://localhost:3001/produtos/categoria/${categoriaId}`;
+      url = `https://backend-owlr.onrender.com/produtos/categoria/${categoriaId}`;
     } else if (search !== "") {
-      url = `http://localhost:3001/produtos?q=${encodeURIComponent(search)}`;
+      url = `https://backend-owlr.onrender.com/produtos?q=${encodeURIComponent(search)}`;
     } else {
-      url = "http://localhost:3001/produtos/populares";
+      url = "https://backend-owlr.onrender.com/produtos/populares";
     }
     fetchData(url, data => {
       setDataProdutos(data);
       if(categoriaId){
-        fetchData(`http://localhost:3001/categorias/${categoriaId}`, setCategoriaSelecionada);
+        fetchData(`https://backend-owlr.onrender.com/categorias/${categoriaId}`, setCategoriaSelecionada);
       }
     });
   }, [categoriaId, location.search]);
