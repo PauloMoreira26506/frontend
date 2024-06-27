@@ -10,7 +10,7 @@ import fetchData from "../fetchData";
 const StoreMain = () => {
   const [produtosPopulares, setProdutosPopulares] = useState([]);
 
-  const url = "http://localhost:3001/produtos/populares";
+  const url = "https://backend-owlr.onrender.com/produtos/populares";
   useEffect(() => {
     fetchData(url, setProdutosPopulares);
   }, []);
