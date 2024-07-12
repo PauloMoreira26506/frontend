@@ -17,6 +17,8 @@ import fetchData from "../../fetchData";
 import Ticket from "./Tickets";
 import Cliente from "./Cliente";
 import Privilegios from "./Privilegios";
+import Pacotes from "./Pacotes";
+import Pacote from "./Pacote";
 const { Item, Searchbar } = Sidebar;
 
 const Dashboard = () => {
@@ -110,6 +112,7 @@ class Admin extends Component {
       <Item key="clientes" text="Clientes" to="/admin/clientes" />
       <Item key="tickets" text="Tickets" to="/admin/tickets" />
       <Item key="privilegios" text="Privilégios" to="/admin/privilegios" />
+      <Item key="pacotes" text="Pacotes" to="/admin/pacotes" />
     </>,
   ];
 
@@ -133,6 +136,8 @@ class Admin extends Component {
         <Ticket path="/admin/tickets" />
         <Cliente path="/admin/cliente/:id" />
         <Privilegios path="/admin/privilegios" />
+        <Pacotes path="/admin/pacotes" />
+        <Pacote path="/admin/pacote/:id" />
       </AdminLTE>
     );
   }

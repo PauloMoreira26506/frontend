@@ -20,6 +20,8 @@ const EditarProduto = () => {
   const [prints, setPrints] = useState("");
   const [versoes, setVersoes] = useState("");
   const [versao, setVersao] = useState("");
+  const [extensao, setExtensao] = useState("");
+  const [extensaoDescricao, setExtensaoDescricao] = useState("");
 
   useEffect(() => {
     const path = window.location.pathname;
@@ -119,7 +121,7 @@ const EditarProduto = () => {
     const url = `https://backend-owlr.onrender.com/produtos/criarversao/${id}`;
     axios
       .post(url, {
-        versao: versao, produtoid: id
+        versao: versao,
       })
       .then((response) => {
         if (response.data.success === true) {
@@ -131,7 +133,29 @@ const EditarProduto = () => {
       .catch((error) => {
         alert("Error 34 " + error);
       });
-  }
+  };
+
+  function handleSubmitExtensao(e) {
+    e.preventDefault();
+    const path = window.location.pathname;
+    const id = path.split("/").pop();
+    const url = `https://backend-owlr.onrender.com/produtos/criarextensao/${id}`;
+    axios
+      .post(url, {
+        designacao: extensao,
+        descricao: extensaoDescricao,
+      })
+      .then((response) => {
+        if (response.data.success === true) {
+          alert(response.data.message);
+        } else {
+          alert("Error");
+        }
+      })
+      .catch((error) => {
+        alert("Error 34 " + error);
+      });
+  };
 
   return (
     <>
@@ -303,7 +327,31 @@ const EditarProduto = () => {
             <form id="versao" onSubmit={handleSubmitVersao}>
               <div className="form-group">
                 <label htmlFor="versao">Versão</label>
-                <input id="versao" onChange={(e) => setVersao(e.target.value)}></input>
+                <input
+                  id="versao"
+                  onChange={(e) => setVersao(e.target.value)}
+                ></input>
+              </div>
+              <button type="submit">Adicionar</button>
+            </form>
+          </Box>
+        </Row>
+        <Row>
+          <Box title="Adicionar extensão" type="primary" closable collapsable>
+            <form id="versao" onSubmit={handleSubmitExtensao}>
+              <div className="form-group">
+                <label htmlFor="designacao">Extensão</label>
+                <input
+                  id="designacao"
+                  onChange={(e) => setExtensao(e.target.value)}
+                ></input>
+              </div>
+              <div className="form-group">
+                <label htmlFor="versao">Descrição</label>
+                <input
+                  id="descricao"
+                  onChange={(e) => setExtensaoDescricao(e.target.value)}
+                ></input>
               </div>
               <button type="submit">Adicionar</button>
             </form>
