@@ -66,7 +66,7 @@ const Produtos = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3001/produtos/create",
+        "https://backend-owlr.onrender.com/produtos/create",
         formData
       );
       console.log("Resposta do servidor: ", response.data);
@@ -86,7 +86,7 @@ const Produtos = () => {
       };
 
       const response = await axios.post(
-        "http://localhost:3001/categorias/create",
+        "https://backend-owlr.onrender.com/categorias/create",
         formData
       );
       console.log(response.data);

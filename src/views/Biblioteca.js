@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import Navbar from "../components/Navbar/Navbar";
-import { Container, Row, Col, Breadcrumb } from "react-bootstrap";
+import { Container, Row, Col, Breadcrumb, Accordion } from "react-bootstrap";
 import fetchData from "../fetchData";
 import { UserContext } from "../App";
 import ProdutoBiblioteca from "../components/ProdutoBiblioteca/ProdutoBiblioteca";
+import ProdutoGerente from "../components/ProdutoBiblioteca/ProdutoGerente";
 
 const Biblioteca = () => {
   const { utilizadorAtual } = useContext(UserContext);
@@ -17,7 +18,8 @@ const Biblioteca = () => {
     fetchData(urlAssociacoes, setAssociacoes);
   }, [utilizadorAtual]);
 
-  console.log(associacoes);
+  console.log(associacoes.length);
+  console.log(chaves.length);
 
   return (
     <div>
@@ -30,39 +32,53 @@ const Biblioteca = () => {
             <Breadcrumb.Item active>Biblioteca</Breadcrumb.Item>
           </Breadcrumb>
         </Row>
-        {chaves ? (
-          <Row xs={1} md={4} className="g-4">
-            {chaves.map((data, index) => (
-              <Col key={index}>
-                <ProdutoBiblioteca
-                  imagem={data.produto.imagem}
-                  nome={data.produto.nome}
-                  versao={data.produto.versao}
-                  compra={data.id}
-                />
-              </Col>
-            ))}
-          </Row>
-        ) : (
-          "Não tem chaves"
-        )}
-        {associacoes ? (
-          <>
-            <Row xs={1} md={4} className="g-4">
-              {associacoes.map((data, index) => (
-                <Col>
-                  <ProdutoBiblioteca
-                    imagem={data.chave.compra.produto.imagem}
-                    nome={data.chave.compra.produto.nome}
-                    versao={data.chave.compra.produto.versao}
-                  />
-                </Col>
-              ))}
-            </Row>
-          </>
-        ) : (
-          "Não tem chaves atribuidas"
-        )}
+        <Accordion defaultActiveKey={["0"]} alwaysOpen>
+          <Accordion.Item eventKey="0">
+            <Accordion.Header>Produtos</Accordion.Header>
+            <Accordion.Body>
+              {chaves.length > 0 ? (
+                <Row xs={1} md={4}>
+                  {chaves.map((data, index) => (
+                    <Col key={index}>
+                      <ProdutoBiblioteca
+                        imagem={data.versaoproduto.produto.imagem}
+                        nome={data.versaoproduto.produto.nome}
+                        versao={data.versaoproduto.versao}
+                        compra={data.id}
+                        produto={data.versaoproduto.produtoid}
+                      />
+                    </Col>
+                  ))}
+                </Row>
+              ) : (
+                "Não tem chaves"
+              )}
+            </Accordion.Body>
+          </Accordion.Item>
+          <Accordion.Item eventKey="1">
+            <Accordion.Header>Produtos atríbuidos</Accordion.Header>
+            <Accordion.Body>
+              {associacoes.length > 0 ? (
+                <Row xs={1} md={4}>
+                  {associacoes.map((data, index) => (
+                    <Col key={index}>
+                      <ProdutoGerente
+                        imagem={data.chave.compra.versaoproduto.produto.imagem}
+                        nome={data.chave.compra.versaoproduto.produto.nome}
+                        versao={data.chave.compra.versaoproduto.versao}
+                        chave={data.chaveid}
+                        compra={data.chave.compraid}
+                        produto={data.chave.produtoid}
+                      />
+                    </Col>
+                  ))}
+                </Row>
+              ) : (
+                "Não tem chaves atribuidas"
+              )}
+            </Accordion.Body>
+          </Accordion.Item>
+        </Accordion>
       </Container>
     </div>
   );

@@ -10,7 +10,7 @@ const fetchData = async (url, setData) => {
       throw new Error("Error Web Service");
     }
   } catch (error) {
-    alert(error.message);
+    console.log(error.message + " " + url);
   }
 };
 

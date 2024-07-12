@@ -7,26 +7,74 @@ import {
   Button,
   Form,
   FormGroup,
+  Dropdown,
+  FloatingLabel,
+  Select,
 } from "react-bootstrap";
 import estilosProduto from "./Produto.module.css";
 import Slider from "../components/Slider/Slider";
 import Footer from "../components/Footer";
 import fetchData from "../fetchData";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar/Navbar";
 import { UserContext } from "../App";
-import axios from 'axios';
+import axios from "axios";
+import Pacote from "../components/Pacote/Pacote";
+import Extensao from "../components/Extensões/extensao";
 
 export const Produto = () => {
   const { produtoId } = useParams();
   const [produto, setProduto] = useState([]);
+  const [pacotes, setPacotes] = useState([]);
+  const [extensoes, setExtensoes] = useState([]);
+  const [versoes, setVersoes] = useState([]);
   const { utilizadorAtual } = useContext(UserContext);
+  const [versao, setVersao] = useState({});
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    empresa: "",
+    licencas: "",
+    setor: "",
+    pacoteid: "",
+    extensaoid: "",
+    mensagem: "",
+    utilizadorid: utilizadorAtual.id,
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmitOrcamento = (e) => {
+    e.preventDefault();
+    axios
+      .post("https://backend-owlr.onrender.com/orcamento/create", formData)
+      .then((response) => {
+        console.log("Dados enviados com sucesso: ", response.data);
+      })
+      .catch((error) => {
+        console.error("Erro ao enviar os dados: ", error);
+      });
+  };
 
   const url = `https://backend-owlr.onrender.com/produtos/${produtoId}`;
+  const urlPacotes = `https://backend-owlr.onrender.com/produtos/pacotes/${produtoId}`;
+  const urlExtensoes = `https://backend-owlr.onrender.com/produtos/extensoes/${produtoId}`;
+  const urlVersoes = `https://backend-owlr.onrender.com/produtos/versoes/${produtoId}`;
 
   useEffect(() => {
     fetchData(url, setProduto);
+    fetchData(urlPacotes, setPacotes);
+    fetchData(urlExtensoes, setExtensoes);
+    fetchData(urlVersoes, setVersoes);
   }, [url]);
+
+  if (extensoes) {
+    console.log(extensoes);
+  }
 
   const converterData = (data) => {
     const date = new Date(data);
@@ -34,18 +82,21 @@ export const Produto = () => {
   };
 
   const handleObter = async () => {
-    try{
-      const response = await axios.post('https://backend-owlr.onrender.com/chaves/associar', { utilizador: utilizadorAtual.id, produto: produtoId});
-      console.log('Chave associada com sucesso: ', response.data);
+    try {
+      const response = await axios.post(
+        "https://backend-owlr.onrender.com/chaves/associar",
+        { utilizador: utilizadorAtual.id, produto: produtoId, versao: versao }
+      );
+      navigate("/comprarealizada");
     } catch (error) {
-      if(error.response){
+      if (error.response) {
         const resposta = error.response.data.message;
         alert(resposta);
       }
-      
-      console.error('Erro ao associar a chave ao utilizador: ', error);
+
+      console.error("Erro ao associar a chave ao utilizador: ", error);
     }
-  }
+  };
 
   const calcularEstrelas = (classificacao) => {
     const totalEstrelas = 5;
@@ -54,28 +105,32 @@ export const Produto = () => {
     const estrelasVazias = totalEstrelas - estrelasCompletas - estrelasMetade;
 
     const estrelas = [];
-    for (let i = 0; i < estrelasCompletas; i++){
+    for (let i = 0; i < estrelasCompletas; i++) {
       estrelas.push(<i key={`estrela-${i}`} className="bi bi-star-fill"></i>);
     }
     if (estrelasMetade === 1) {
       estrelas.push(<i key="estrelametade" className="bi bi-star-half"></i>);
-    } 
-    for (let i = 0; i < estrelasVazias; i++){
+    }
+    for (let i = 0; i < estrelasVazias; i++) {
       estrelas.push(<i key={`estrelavazia-${i}`} classNamme="bi bi-star"></i>);
     }
 
     return estrelas;
-    }
+  };
 
-    const obterPrints = (texto) => {
+  const obterPrints = (texto) => {
+    const prints = texto.split("|");
+    console.log("Prints: ", prints);
+    return prints;
+  };
 
-      const prints = texto.split("|");
-      console.log("Prints: ", prints);
-      return prints;
-    }
+  const handleChangeVersao = (e) => {
+    setVersao(e.target.value);
+  };
+
   return (
     <>
-      <Navbar/>
+      <Navbar />
       <Container>
         <Row className="mt-5">
           <Breadcrumb>
@@ -112,11 +167,12 @@ export const Produto = () => {
                 className="d-flex justify-content-center align-items-center"
               >
                 {" "}
-                {produto.categoriaproduto && produto.categoriaproduto.designacao && (
-                  <p className={estilosProduto.categoriaProduto}>
-                    {produto.categoriaproduto.designacao}
-                  </p>
-                )}
+                {produto.categoriaproduto &&
+                  produto.categoriaproduto.designacao && (
+                    <p className={estilosProduto.categoriaProduto}>
+                      {produto.categoriaproduto.designacao}
+                    </p>
+                  )}
               </Col>
             </Col>
           </Col>
@@ -139,7 +195,7 @@ export const Produto = () => {
               </p>
             </Row>
             <Row>
-              <Col className="flex-column" md={2}>
+              <Col className="flex-column">
                 <p style={{ fontSize: "20px", fontWeight: "600" }}>
                   Classificação
                 </p>
@@ -149,11 +205,6 @@ export const Produto = () => {
                 <div className="estrelas">
                   {}
                   {calcularEstrelas(produto.classificacao)}
-                </div>
-              </Col>
-              <Col>
-                <div className={estilosProduto.barrasClassificacao}>
-                  Área para as barras de classificação
                 </div>
               </Col>
             </Row>
@@ -234,17 +285,14 @@ export const Produto = () => {
                     }}
                     className="mb-0"
                   >
-                    Versão recente
+                    Versão
                   </p>
-                  <p
-                    style={{
-                      fontSize: "16px",
-                      fontWeight: "600",
-                      color: "var(--AzulEscuro)",
-                    }}
-                  >
-                    {produto.versao}
-                  </p>
+                  <Form.Select onChange={handleChangeVersao}>
+                    <option>Escolhe a versão</option>
+                    {versoes.map((versao, index) => (
+                      <option key={index} value={versao.id}>{versao.versao}</option>
+                    ))}
+                  </Form.Select>
                 </Row>
               </Col>
             </Row>
@@ -281,7 +329,11 @@ export const Produto = () => {
         </Row>
         <Row className="mt-5 justify-content-center">
           <Col md={9} className="mt-5">
-            {produto.prints ? <Slider prints={obterPrints(produto.prints)}/> : ""}
+            {produto.prints ? (
+              <Slider prints={obterPrints(produto.prints)} />
+            ) : (
+              ""
+            )}
           </Col>
         </Row>
         <Row>
@@ -301,13 +353,19 @@ export const Produto = () => {
               Obtenha desconto no produto por comprar em conjunto
             </p>
           </div>
-          <Row>
-            <div style={{ backgroundColor: "grey", height: "200px" }}>
-              Área para pacotes
-            </div>
-          </Row>
+          {pacotes.length > 0 ? (
+            <Row>
+              {pacotes.map((pacote, index) => (
+                <Pacote key={index} pacote={pacote.pacote} />
+              ))}
+            </Row>
+          ) : (
+            <p>
+              <strong>Nenhum pacote disponível</strong>
+            </p>
+          )}
         </Row>
-        <Row>
+        <Row className="mt-5">
           <div className={estilosProduto.titulos}>
             {" "}
             <h1 className={estilosProduto.titulo}>Extensões</h1>
@@ -324,11 +382,17 @@ export const Produto = () => {
               Descubra mais funcionalidades com estas versões
             </p>
           </div>
-          <Row>
-            <div style={{ backgroundColor: "grey", height: "200px" }}>
-              Área para extensões
-            </div>
-          </Row>
+          {extensoes.length > 0 ? (
+            <Row>
+              {extensoes.map((extensao, index) => (
+                <Extensao key={index} extensao={extensao} />
+              ))}
+            </Row>
+          ) : (
+            <p>
+              <strong>Não existem extensões</strong>
+            </p>
+          )}
         </Row>
         <Row>
           <Row className="text-start mt-5 mb-2">
@@ -351,19 +415,31 @@ export const Produto = () => {
               Solicite um orçamento personalizado para adquirir vários softwares
             </p>
           </Row>
-          <Form>
-            <Row className="text-start">
+          <Form onSubmit={handleSubmitOrcamento}>
+            <Row className="text-start mb-4">
               <Col md={4}>
                 <FormGroup>
                   <Form.Label>Empresa</Form.Label>
-                  <Form.Control type="text" placeholder="Nome da empresa" />
+                  <Form.Control
+                    type="text"
+                    name="empresa"
+                    placeholder="Nome da empresa"
+                    value={formData.empresa}
+                    onChange={handleChange}
+                  />
                 </FormGroup>
               </Col>
               <Col md={4}>
                 {" "}
                 <FormGroup>
                   <Form.Label>Licenças</Form.Label>
-                  <Form.Control type="text" placeholder="Número de licenças" />
+                  <Form.Control
+                    type="text"
+                    name="licencas"
+                    placeholder="Número de licenças"
+                    value={formData.licencas}
+                    onChange={handleChange}
+                  />
                 </FormGroup>
               </Col>
               <Col md={4}>
@@ -372,16 +448,90 @@ export const Produto = () => {
                   <Form.Label>Setor</Form.Label>
                   <Form.Control
                     type="text"
+                    name="setor"
                     placeholder="Qual a área da empresa"
+                    value={formData.setor}
+                    onChange={handleChange}
                   />
                 </FormGroup>
+              </Col>
+            </Row>
+            <Row className="text-start mb-4">
+              <Col md={4}>
+                <FormGroup>
+                  {pacotes.length > 0 ? (
+                    <>
+                      {" "}
+                      <Form.Label>Pacote</Form.Label>
+                      <Form.Select
+                        aria-label="Pacote"
+                        name="pacoteid"
+                        defaultValue=""
+                        value={formData.pacote}
+                        onChange={handleChange}
+                      >
+                        <option value="">Selecione um pacote</option>
+                        {pacotes.map((pacote, index) => (
+                          <option value={pacote.pacoteid} key={index}>
+                            {pacote.pacote.designacao}
+                          </option>
+                        ))}
+                      </Form.Select>
+                    </>
+                  ) : (
+                    ""
+                  )}
+                </FormGroup>
+              </Col>
+              <Col md={4}>
+                <FormGroup>
+                  {extensoes.length > 0 ? (
+                    <>
+                      {" "}
+                      <Form.Label>Extensão</Form.Label>
+                      <Form.Select
+                        aria-label="Extensão"
+                        name="extensaoid"
+                        defaultChecked=""
+                        value={formData.extensao}
+                        onChange={handleChange}
+                      >
+                        <option value="">Selecione uma extensão</option>
+                        {extensoes.map((extensao, index) => (
+                          <option value={extensao.id} key={index}>
+                            {extensao.designacao}
+                          </option>
+                        ))}
+                      </Form.Select>
+                    </>
+                  ) : (
+                    ""
+                  )}
+                </FormGroup>
+              </Col>
+            </Row>
+            <Row className="mb-4">
+              <Col>
+                <FloatingLabel
+                  controlId="floatingTextarea"
+                  label="Mensagem"
+                  className="mb-3"
+                >
+                  <Form.Control
+                    as="textarea"
+                    name="mensagem"
+                    placeholder="Escreva uma mensagem"
+                    value={formData.mensagem}
+                    onChange={handleChange}
+                  />
+                </FloatingLabel>
               </Col>
             </Row>
             <Row className="text-end">
               <Col>
                 <Button
                   type="submit"
-                  style={{ width: "200px" }}
+                  style={{ width: "100%" }}
                   className="mt-2"
                 >
                   Solicitar

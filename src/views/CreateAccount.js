@@ -8,7 +8,7 @@ const CreateAccount = () => {
   var [nome, setNome] = useState("");
   var [email, setEmail] = useState("");
   var [password, setPassword] = useState("");
-  var tipoutilizador = 3;
+  var tipoutilizador = 1;
 
 
   async function handleCreateAccount(event) {

@@ -13,20 +13,23 @@ const EditarProduto = () => {
   const [imagem, setImagem] = useState("");
   const [capa, setCapa] = useState("");
   const [tamanho, setTamanho] = useState("");
-  const [versao, setVersao] = useState("");
   const [dataPublicacao, setDataPublicacao] = useState("");
   const [descricao, setDescricao] = useState("");
   const [preco, setPreco] = useState(0);
   const [popular, setPopular] = useState(false);
   const [prints, setPrints] = useState("");
+  const [versoes, setVersoes] = useState("");
+  const [versao, setVersao] = useState("");
 
   useEffect(() => {
     const path = window.location.pathname;
     const id = path.split("/").pop();
     const urlProduto = `https://backend-owlr.onrender.com/produtos/${id}`;
     const urlCategorias = "https://backend-owlr.onrender.com/categorias";
+    const urlVersoes = `https://backend-owlr.onrender.com/produtos/versoes/${id}`;
     fetchData(urlProduto, setProduto);
     fetchData(urlCategorias, setCategorias);
+    fetchData(urlVersoes, setVersoes);
   }, []);
 
   useEffect(() => {
@@ -40,7 +43,6 @@ const EditarProduto = () => {
       setImagem(produto.imagem);
       setCapa(produto.capa);
       setTamanho(produto.tamanho);
-      setVersao(produto.versao);
       setDataPublicacao(produto.publicacao);
       setDescricao(produto.descricao);
       setPreco(produto.preco);
@@ -49,14 +51,16 @@ const EditarProduto = () => {
     }
   }, [produto]);
 
-  function sendUpdate() {
+  function sendUpdate(e) {
+    e.preventDefault();
     const path = window.location.pathname;
     const id = path.split("/").pop();
+    console.log("id: ", id);
+
     const url = `https://backend-owlr.onrender.com/produtos/update/${id}`;
     const data = {
       nome: nome,
       emp: desenvolvedor,
-      versao: versao,
       tamanho: tamanho,
       publicacao: dataPublicacao,
       preco: preco,
@@ -66,22 +70,68 @@ const EditarProduto = () => {
       popular: popular,
       descricao: descricao,
       categoriaid: categoriaSelecionada,
-      prints: prints
-    }
+      prints: prints,
+    };
 
-    axios.post(url, data)
-    .then(response => {
-      if(response.data.success === true){
-        alert(response.data.message)
-      } else {
-        alert("Error")
-      }
-    }).catch(error => {alert("Error 34 " + error)})
+    console.log(data);
+
+    axios
+      .post(url, data)
+      .then((response) => {
+        if (response.data.success === true) {
+          alert(response.data.message);
+        } else {
+          alert("Error");
+        }
+      })
+      .catch((error) => {
+        alert("Error 34 " + error);
+      });
   }
 
   const handleChangeClassificacao = (event) => {
     setClassificacao(event.target.value);
   };
+
+  function sendDelete() {
+    const path = window.location.pathname;
+    const id = path.split("/").pop();
+
+    const url = "https://backend-owlr.onrender.com/produtos/delete";
+    axios
+      .post(url, { id: id })
+      .then((response) => {
+        if (response.data.success === true) {
+          alert(response.data.message);
+        } else {
+          alert("Erro");
+        }
+      })
+      .catch((error) => {
+        alert("Error 325");
+      });
+  }
+
+  function handleSubmitVersao(e) {
+    e.preventDefault();
+    const path = window.location.pathname;
+    const id = path.split("/").pop();
+    const url = `https://backend-owlr.onrender.com/produtos/criarversao/${id}`;
+    axios
+      .post(url, {
+        versao: versao, produtoid: id
+      })
+      .then((response) => {
+        if (response.data.success === true) {
+          alert(response.data.message);
+        } else {
+          alert("Error");
+        }
+      })
+      .catch((error) => {
+        alert("Error 34 " + error);
+      });
+  }
 
   return (
     <>
@@ -118,9 +168,6 @@ const EditarProduto = () => {
                     onChange={(e) => setCategoriaSelecionada(e.target.value)}
                   >
                     {" "}
-                    {/* <option value="" disabled selected>
-                      Selecione uma categoria
-                    </option> */}
                     {categorias.map((data, index) => (
                       <option key={index} value={data.id}>
                         {data.designacao}
@@ -177,18 +224,6 @@ const EditarProduto = () => {
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="versao">Versão</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="versao"
-                    name="versao"
-                    required
-                    value={versao}
-                    onChange={(value) => setVersao(value.target.value)}
-                  />
-                </div>
-                <div className="form-group">
                   <label htmlFor="dataPublicacao">Data de Publicação</label>
                   <input
                     type="date"
@@ -211,7 +246,12 @@ const EditarProduto = () => {
                 </div>
                 <div className="form-group">
                   <label htmlFor="dataPublicacao">Prints</label>
-                  <textarea name="prints" id="prints" value={prints} onChange={(value) => setPrints(value.target.value)}></textarea>
+                  <textarea
+                    name="prints"
+                    id="prints"
+                    value={prints}
+                    onChange={(value) => setPrints(value.target.value)}
+                  ></textarea>
                 </div>
                 <div className="form-group">
                   <label htmlFor="dataPublicacao">Preço</label>
@@ -246,10 +286,28 @@ const EditarProduto = () => {
                     id="popular"
                   />
                 </div>
-                <button type="submit">Adicionar</button>
+                <button type="submit">Editar</button>
+                <button
+                  onClick={() => {
+                    sendDelete();
+                  }}
+                >
+                  Apagar
+                </button>
               </form>
             </Box>
           </Col>
+        </Row>
+        <Row>
+          <Box title="Adicionar versão" type="primary" closable collapsable>
+            <form id="versao" onSubmit={handleSubmitVersao}>
+              <div className="form-group">
+                <label htmlFor="versao">Versão</label>
+                <input id="versao" onChange={(e) => setVersao(e.target.value)}></input>
+              </div>
+              <button type="submit">Adicionar</button>
+            </form>
+          </Box>
         </Row>
       </Content>
     </>

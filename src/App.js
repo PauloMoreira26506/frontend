@@ -7,12 +7,17 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import Login from "./views/Login";
 import SettingsAccount from "./views/SettingsAccount";
+import SettingsAccount2 from "./views/SettingsAccount2";
 import StoreMain from "./views/StoreMain";
 import Listar from "./views/Listar";
 import { Produto } from "./views/Produto";
 import Biblioteca from "./views/Biblioteca";
 import Gerir from "./views/Gerir";
 import ProtectedRoute from "./ProtectedRoutes";
+import CompraRealizada from "./views/CompraRealizada";
+import PerfilAtualizado from "./views/PerfilAtualizado";
+import PagamentoCompra from "./views/PagamentoCompra";
+import Historico from "./views/Historico";
 const Admin = lazy(() => import("./views/Admin/Admin"));
 
 export const UserContext = createContext();
@@ -49,7 +54,12 @@ function App() {
             <Route path="/create" element={<CreateAccount />} />
             <Route path="/login" element={<Login />} />
             <Route path="/settings" element={<SettingsAccount />} />
+            <Route path="/settings2" element={<SettingsAccount2 />} />
+            <Route path="/comprarealizada" element={<CompraRealizada />} />
+            <Route path="/perfilatualizado" element={<PerfilAtualizado />} />
             <Route path="/store" element={<StoreMain />} />
+            <Route path="/pagamento" element={<PagamentoCompra />} />
+            <Route path="/historico" element={<Historico />} />
             <Route path="/store/populares" element={<Listar />} />
             <Route
               path="/store/produto/:produtoId"

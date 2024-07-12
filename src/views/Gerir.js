@@ -38,7 +38,7 @@ const Gerir = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:3001/chaves/associargerente",
+        "https://backend-owlr.onrender.com/chaves/associargerente",
         {
           email: email,
           quantidade: quantidade,
@@ -73,6 +73,20 @@ const Gerir = () => {
   });
 
   const emailCount = Object.entries(emailChavesCount);
+
+  const handleDesativar = (email) => async(e) => {
+    e.preventDefault();
+    try{
+      const response = await axios.post("https://backend-owlr.onrender.com/chaves/desativarassociacao", {email: email});
+      if (response.status === 200) {
+        window.location.reload();
+      } else {
+        console.error("Erro ao desativar chave");
+      }
+    } catch (error){
+      console.error(error);
+    }
+  }
 
   return (
     <div>
@@ -145,7 +159,7 @@ const Gerir = () => {
                   onChange={(value) => setQuantidade(value.target.value)}
                 />
               </InputGroup>
-              <Button type="submit">Adicionar gestor</Button>
+              <Button type="submit">Adicionar gerente</Button>
             </Form>
           </Col>
         </Row>
@@ -156,7 +170,9 @@ const Gerir = () => {
           {emailCount.map(([email, count], index) => (
             <p key={index}>
               {email} - {count} chave(s)
+              <i className="bi bi-x" onClick={handleDesativar(email)}></i>
             </p>
+            
           ))}
         </Row>
       </Container>

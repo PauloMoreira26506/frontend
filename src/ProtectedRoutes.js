@@ -10,7 +10,7 @@ const ProtectedRoute = ({ children, allowedTypes }) => {
     return <Navigate to="/store" />;
   }
 
-  // Se tiver permissão, renderizar o componente filho
+  // Se tiver permissão, renderizar o componente
   return children;
 };
 

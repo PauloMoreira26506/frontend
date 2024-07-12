@@ -1,0 +1,36 @@
+.fundo{
+    border-radius: 20px;
+    background: var(--Cinzento-Claro, #D2D9E1);
+    height: 68px;
+}
+
+.extensao{
+    border-radius: 20px;
+    background: linear-gradient(270deg, #818F9E 0%, #8FC5FF 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.designacao{
+    color: var(--Branco, #F0F7FD);
+    text-align: center;
+    font-family: Urbanist;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 18px; /* 112.5% */
+    margin: 0;
+}
+
+.descricao{
+    color: #000;
+    font-family: Urbanist;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin: 0;
+    text-align: start;
+}

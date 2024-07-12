@@ -1,16 +1,25 @@
 import React, { useState, useEffect, useContext } from "react";
 import estilo from "./ProdutoBiblioteca.module.css";
-import { Container, Row, Col, Button, Badge, Modal, Form } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Button,
+  Badge,
+  Modal,
+  Form,
+} from "react-bootstrap";
 import { Link } from "react-router-dom";
 import fetchData from "../../fetchData";
-import axios from "axios";
 import { UserContext } from "../../App";
+import axios from "axios";
 
-const ProdutoBiblioteca = ({ imagem, nome, versao, compra, produto }) => {
+
+const ProdutoGerente = ({ imagem, nome, versao, chave, compra, produto }) => {
   const [chavesDisponiveis, setChavesDisponiveis] = useState([]);
   const [chavesInstaladas, setChavesInstaladas] = useState([]);
   const [show, setShow] = useState(false);
-  const [mensagem, setMensagem] = useState([]);
+  const [mensagem, setMensagem] = useState("");
   const { utilizadorAtual } = useContext(UserContext);
   const urlDisponiveis = `https://backend-owlr.onrender.com/chaves/listarcompra/${compra}`;
   const urlInstaladas = `https://backend-owlr.onrender.com/chaves/listarinstaladas/${compra};`;
@@ -22,7 +31,7 @@ const ProdutoBiblioteca = ({ imagem, nome, versao, compra, produto }) => {
   }, [urlDisponiveis, urlInstaladas]);
 
   const handleClick = () => {
-    const url = `https://backend-owlr.onrender.com/chaves/instalar/${compra}`;
+    const url = `https://backend-owlr.onrender.com/chaves/instalar/${chave}`;
 
     try {
       axios.post(url);
@@ -37,22 +46,22 @@ const ProdutoBiblioteca = ({ imagem, nome, versao, compra, produto }) => {
   const handleTicket = (e) => {
     e.preventDefault();
     console.log(produto);
+    console.log(compra);
     try {
-      console.log(compra);
-      axios.post("https://backend-owlr.onrender.com/tickets/create", {
-        utilizadorid: utilizadorAtual.id,
-        produtoid: produto,
-        mensagem: mensagem,
-        compra: compra,
-      })
-      .then((response) => {
-        console.log("Dados enviados com sucesso: ", response.data);
-      });
+      axios
+        .post("https://backend-owlr.onrender.com/tickets/create", {
+          utilizadorid: utilizadorAtual.id,
+          produtoid: produto,
+          mensagem: mensagem,
+          compra: compra,
+        })
+        .then((response) => {
+          console.log("Dados enviados com sucesso: ", response.data);
+        });
     } catch (error) {
       console.log(error);
     }
   };
-
   return (
     <>
       <div className={estilo.card}>
@@ -64,7 +73,7 @@ const ProdutoBiblioteca = ({ imagem, nome, versao, compra, produto }) => {
           </Row>
         </Container>
         <Modal show={show} onHide={handleClose}>
-          <Modal.Header closebutton>
+          <Modal.Header closeButton>
             <Modal.Title>Ticket</Modal.Title>
           </Modal.Header>
           <Modal.Body>
@@ -78,7 +87,9 @@ const ProdutoBiblioteca = ({ imagem, nome, versao, compra, produto }) => {
               </Form.Group>
             </Form>
           </Modal.Body>
-          <Modal.Footer><Button onClick={handleTicket}>Enviar</Button></Modal.Footer>
+          <Modal.Footer>
+            <Button onClick={handleTicket}>Enviar</Button>
+          </Modal.Footer>
         </Modal>
         <Container className="position-absolute bottom-0 z-1">
           <Row className={estilo.botoes}>
@@ -95,19 +106,12 @@ const ProdutoBiblioteca = ({ imagem, nome, versao, compra, produto }) => {
             <Row>
               <Col>
                 {" "}
-                <Link to={"/store/biblioteca/gerir/" + compra}>
-                  <Button className="w-100 m-1">Gerir</Button>
-                </Link>
-              </Col>
-              <Col>
-                {" "}
-                <Button className="w-100 m-1" onClick={handleClick}>
+                <Button className="w-100 m-1" onClick={() => handleClick()}>
                   Instalar
                 </Button>
               </Col>
             </Row>
           </Row>
-
           <p className={`${estilo.nome} mt-1`}>
             {nome}
             <span className={`${estilo.badge} m-2`}>
@@ -122,4 +126,4 @@ const ProdutoBiblioteca = ({ imagem, nome, versao, compra, produto }) => {
   );
 };
 
-export default ProdutoBiblioteca;
+export default ProdutoGerente;
